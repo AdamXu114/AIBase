@@ -2,14 +2,14 @@ import copy
 import numpy as np
 
 from agent.base_agent import BaseAgent
-from agent.heuristic import exp_heuristic
+from agent.heuristic import exp_heuristic as heuristic
 
 
 class SimpleHeuristicAgent(BaseAgent):
     """
         This is a simple heuristic agent for the 2048 game.
     """
-    def __init__(self, game, ui, heuristic=exp_heuristic):
+    def __init__(self, game, ui, heuristic=heuristic):
         super().__init__(game, ui)
         self._heuristic = heuristic
     

@@ -3,7 +3,7 @@ import random
 from joblib import Parallel, delayed
 
 from agent.base_agent import BaseAgent, raiseNotDefined
-
+from agent.heuristic import exp_heuristic2 as heuristic
 def rollout_once(game, action):
     game_sim = copy.deepcopy(game)
     game_sim.set_state(game.get_state())
@@ -12,7 +12,10 @@ def rollout_once(game, action):
     while True:
         over, state_val, total_score = game_sim.is_game_over()
         if over:
-            return total_score
+            heuristic_val = heuristic(game.get_state())
+            # print("heuristic_value:", heuristic_val)
+            return total_score + heuristic_val if not (
+                        state_val == game.max_value()) else 1e6
         else:
             possible_actions_sim = game_sim.get_valid_actions()
             if possible_actions_sim:

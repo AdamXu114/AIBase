@@ -7,8 +7,8 @@ import math
 
 from game.game import Game2048
 
-from agent.heuristic import exp_heuristic as heuristic
-def rollout_once(game, action):
+from agent.heuristic import exp_heuristic2 as heuristic
+def rollout_once(game, action, max_depth = 50):
     game_sim = copy.deepcopy(game)
     game_sim.set_state(game.get_state())
     game_sim.set_action(action)
@@ -16,10 +16,13 @@ def rollout_once(game, action):
     while True:
         over, state_val, total_score = game_sim.is_game_over()
         if over:
-            heuristic_val = heuristic(game.get_state())
             # print("heuristic_value:", heuristic_val)
-            return total_score +  0.*state_val/game.max_value()*heuristic_val if not (state_val == game.max_value()) else float('inf')
+            return total_score if not (state_val == game.max_value()) else 1e7
+        if max_depth==0:
+            heuristic_val = heuristic(game.get_state())
+            return heuristic_val if not (state_val == game.max_value()) else 1e7
         else:
+            max_depth -= 1
             possible_actions_sim = game_sim.get_valid_actions()
             if possible_actions_sim:
                 action_sim = random.choice(possible_actions_sim)
@@ -94,6 +97,7 @@ class MCTSAgent(BaseAgent):
             self.state_info[state_key] = [score,1]
             self.num_simulations[state_key][action_sim] = 1
             return score
+
 
         selected_action = self._select_action(gameState)
         game_sim = copy.deepcopy(self._game)

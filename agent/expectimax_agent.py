@@ -1,10 +1,10 @@
 import copy
 from agent.base_agent import BaseAgent, raiseNotDefined
-from agent.heuristic import exp_heuristic
+from agent.heuristic import exp_heuristic2 as heuristic
 
 
 class ExpectimaxAgent(BaseAgent):
-    def __init__(self, game,ui, max_depth=5,heuristic=exp_heuristic):
+    def __init__(self, game,ui, max_depth=10,heuristic=heuristic):
         super().__init__(game, ui)
         self._max_depth = max_depth
         self._heuristic = heuristic
